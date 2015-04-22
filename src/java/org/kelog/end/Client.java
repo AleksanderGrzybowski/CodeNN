@@ -10,22 +10,22 @@ import java.util.logging.Logger;
 
 public class Client {
 
-	private static Logger logger = Logger.getLogger(Client.class.getName());
 	EncogAdapter adapter = new EncogAdapter();
-	public static final String NETWORK_FILENAME = "/tmp/network.eg";
+
+	private static Logger logger = Logger.getLogger(Client.class.getName());
 
 	public Client() {
 		logger.info("Starting client");
 
-		if (!(new File(NETWORK_FILENAME).exists())) {
-			logger.info("File with network does not exist!");
+		if (!(new File(Config.NETWORK_FILENAME).exists())) {
+			logger.warning("File with network does not exist!");
 			throw new RuntimeException();
 		}
 
-		adapter.restoreFromFile(NETWORK_FILENAME);
+		adapter.restoreFromFile(Config.NETWORK_FILENAME);
 	}
 
-	private static EnumMap<Language, Double> toMap(double[] resp) {
+	private static EnumMap<Language, Double> arrayToMap(double[] resp) {
 		EnumMap<Language, Double> map = new EnumMap<>(Language.class);
 		for (Language lang : Language.values()) {
 			map.put(lang, resp[lang.ordinal()]);
@@ -35,10 +35,7 @@ public class Client {
 
 	public EnumMap<Language, Double> match(String snippet) {
 		double[] question = Parser.histogram(snippet);
-
 		double[] answer = adapter.ask(question);
-//		Utils.normalizeHistogram(answer);
-		return toMap(answer);
+		return arrayToMap(answer);
 	}
-
 }

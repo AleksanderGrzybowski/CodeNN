@@ -2,7 +2,6 @@ package org.kelog.core;
 
 import org.encog.Encog;
 import org.encog.engine.network.activation.ActivationSigmoid;
-import org.encog.ml.data.MLData;
 import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLData;
 import org.encog.ml.data.basic.BasicMLDataSet;
@@ -14,36 +13,25 @@ import org.encog.persist.EncogDirectoryPersistence;
 import java.io.File;
 import java.util.logging.Logger;
 
-/**
- * This library is fucking unusable without some abstraction over
- * all the complex shit involved in neural networks.
- * Let's make our lives easier.
- */
+
 public class EncogAdapter {
 
-	public double inputs[][];
-	public double outputs[][];
-	MLDataSet trainingSet;
-
-	BasicNetwork network;
+	private BasicNetwork network;
 
 	private static Logger logger = Logger.getLogger(EncogAdapter.class.getName());
 
 	public EncogAdapter() {
 	}
 
-
 	public void train(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
 		if (inputs.length != outputs.length) {
-			throw new AssertionError();
+			throw new AssertionError("Numbers of input vectors don't match!");
 		}
 		logger.info("Training network, " + inputs.length + " vector(s)");
 
-		this.inputs = inputs;
-		this.outputs = outputs;
-		trainingSet = new BasicMLDataSet(inputs, outputs);
+		MLDataSet trainingSet = new BasicMLDataSet(inputs, outputs);
 
-		// create a neural network, without using a factory
+
 		network = new BasicNetwork();
 		network.addLayer(new BasicLayer(null, true, inputs[0].length));
 		network.addLayer(new BasicLayer(new ActivationSigmoid(), true, hiddenLayerSize));
@@ -51,11 +39,9 @@ public class EncogAdapter {
 		network.getStructure().finalizeStructure();
 		network.reset();
 
-		// train the neural network
 		final ResilientPropagation train = new ResilientPropagation(network, trainingSet);
 
 		int epoch = 1;
-
 		do {
 			train.iteration();
 			if (epoch % 10 == 0) {
@@ -70,8 +56,7 @@ public class EncogAdapter {
 	}
 
 	public double[] ask(double[] input) {
-		MLData output = network.compute(new BasicMLData(input));
-		return output.getData();
+		return network.compute(new BasicMLData(input)).getData();
 	}
 
 	public void saveToFile(String fname) {

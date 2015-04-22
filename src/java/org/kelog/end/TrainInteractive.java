@@ -2,20 +2,28 @@ package org.kelog.end;
 
 import org.kelog.core.Trainer;
 
+import java.util.Scanner;
+
 public class TrainInteractive {
 	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		String input;
 
-		String dirname, filename;
+		String trainingDir = Config.TRDATA_DIRECTORY;
+		String networkFilename = Config.NETWORK_FILENAME;
 
-		if (args.length == 2) {
-			dirname = args[0];
-			filename = args[1];
-		} else {
-			dirname = "/home/kelog/Kodzenie/EncogAdapter/trdata";
-			filename = "/tmp/network.eg";
+		System.out.printf("Give path for training data (empty=default): ");
+		input = scanner.nextLine();
+		if (input.length() != 0) {
+			trainingDir = input;
 		}
 
-		Trainer.createNetwork(dirname, filename);
+		System.out.printf("Give path for network blob (empty=default): ");
+		input = scanner.nextLine();
+		if (input.length() != 0) {
+			networkFilename = input;
+		}
 
+		Trainer.createNetwork(trainingDir, networkFilename);
 	}
 }
