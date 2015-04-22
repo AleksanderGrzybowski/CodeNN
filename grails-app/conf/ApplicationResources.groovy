@@ -3,6 +3,7 @@ modules = {
         resource url:'js/application.js'
         resource url:'js/jquery.js'
         resource url:'js/bootstrap.js'
+        resource url:'js/highcharts.js'
         resource url:'css/bootstrap.css'
     }
 }
