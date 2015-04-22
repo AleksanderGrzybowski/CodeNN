@@ -1,0 +1,13 @@
+int
+double
+main
+void
+(
+)
+for
+<
+>
+=
+;
+:
+def
