@@ -1,5 +1,5 @@
 package org.kelog.core;
 
 public enum Language {
-	C, JAVA, RUBY;
+	BASH, C, CPP, JAVA, PERL, PYTHON, RUBY
 }
