@@ -46,9 +46,8 @@ public class EncogAdapter {
 		int epoch = 1;
 		do {
 			train.iteration();
-			if (epoch % 10 == 0) {
-				logger.info("Epoch #" + epoch + " Error:" + train.getError());
-			}
+			logger.info("Epoch #" + epoch + " Error:" + train.getError());
+
 			epoch++;
 			if (epoch > Config.MAXIMUM_EPOCHS) {
 				throw new EpochNumberExceeded();

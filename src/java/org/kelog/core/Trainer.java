@@ -29,7 +29,7 @@ public class Trainer {
 
 		EncogAdapter ea = new EncogAdapter();
 		int hiddenLayerSize = (int) Math.sqrt(inputs[0].length * outputs[0].length); // formula from forum
-		ea.train(inputs, outputs, hiddenLayerSize, 0.001);
+		ea.train(inputs, outputs, hiddenLayerSize, 0.00001);
 		ea.saveToFile(filename);
 	}
 
