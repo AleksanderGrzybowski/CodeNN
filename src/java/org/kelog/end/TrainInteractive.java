@@ -1,11 +1,12 @@
 package org.kelog.end;
 
 import org.kelog.core.Trainer;
+import org.kelog.exceptions.EpochNumberExceeded;
 
 import java.util.Scanner;
 
 public class TrainInteractive {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EpochNumberExceeded {
 		Scanner scanner = new Scanner(System.in);
 		String input;
 

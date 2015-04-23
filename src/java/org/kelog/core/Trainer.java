@@ -1,5 +1,7 @@
 package org.kelog.core;
 
+import org.kelog.exceptions.EpochNumberExceeded;
+
 import java.io.File;
 import java.util.logging.Logger;
 
@@ -7,7 +9,7 @@ public class Trainer {
 
 	private static Logger logger = Logger.getLogger(Trainer.class.getName());
 
-	public static void createNetwork(String dirname, String filename) {
+	public static void createNetwork(String dirname, String filename) throws EpochNumberExceeded {
 		int filesCount = countTrainingFiles(dirname);
 		double[][] inputs = new double[filesCount][Words.words.size()];
 		double[][] outputs = new double[filesCount][Language.values().length];

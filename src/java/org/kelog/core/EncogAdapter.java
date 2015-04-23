@@ -9,6 +9,8 @@ import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
 import org.encog.persist.EncogDirectoryPersistence;
+import org.kelog.end.Config;
+import org.kelog.exceptions.EpochNumberExceeded;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -23,7 +25,7 @@ public class EncogAdapter {
 	public EncogAdapter() {
 	}
 
-	public void train(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
+	public void train(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) throws EpochNumberExceeded {
 		if (inputs.length != outputs.length) {
 			throw new AssertionError("Numbers of input vectors don't match!");
 		}
@@ -48,6 +50,9 @@ public class EncogAdapter {
 				logger.info("Epoch #" + epoch + " Error:" + train.getError());
 			}
 			epoch++;
+			if (epoch > Config.MAXIMUM_EPOCHS) {
+				throw new EpochNumberExceeded();
+			}
 		} while (train.getError() > maximumError);
 		logger.info("Epoch #" + epoch + " -> finished.");
 		train.finishTraining();
