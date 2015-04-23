@@ -114,4 +114,7 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     info 'org.kelog'
+    warn 'org.kelog'
+    info 'grails.app.controllers.codenn.MainController'
+    warn 'grails.app.controllers.codenn.MainController'
 }

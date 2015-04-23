@@ -9,11 +9,9 @@ class MainController {
     def index() {
     }
 
-    def ask() {
-        String snippet = params.snippet
+    def ask(String snippet) {
         Client client = new Client();
         EnumMap<Language, Double> map = client.match(snippet)
-        println map
         render map as JSON
     }
 }
