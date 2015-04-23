@@ -25,9 +25,9 @@ public class EncogAdapter {
 	public EncogAdapter() {
 	}
 
-	public void train(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) throws EpochNumberExceeded {
+	public void train(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
 		if (inputs.length != outputs.length) {
-			throw new AssertionError("Numbers of input vectors don't match!");
+			throw new AssertionError("Numbers of input/output vectors don't match!");
 		}
 		logger.info("Training network, " + inputs.length + " vector(s)");
 

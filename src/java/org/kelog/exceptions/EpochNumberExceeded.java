@@ -1,4 +1,4 @@
 package org.kelog.exceptions;
 
-public class EpochNumberExceeded extends Exception {
+public class EpochNumberExceeded extends RuntimeException {
 }

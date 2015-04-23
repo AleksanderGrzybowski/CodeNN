@@ -7,12 +7,21 @@ $('#send').click(function () {
         console.log("Got it! From server:");
         console.log(JSON.stringify(data));
         $('#response').text(JSON.stringify(data));
-        displayChart(data);
-    }).fail(function () {
-        alert("Error. WTF?")
+        if (data.success) {
+            delete data.success;
+            displayChart(data);
+        } else {
+            displayError(data.message);
+        }
+    }).fail(function (jqxhr, textStatus, error) {
+        displayError("An unknown error: " + textStatus + " " + error)
     })
 
 });
+
+function displayError(errorString) {
+    alert(errorString);
+}
 
 function displayChart(data) {
     $('#chart').remove();
