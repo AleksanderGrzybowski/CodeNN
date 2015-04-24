@@ -1,5 +1,7 @@
 package org.kelog.core;
 
+import org.kelog.end.Config;
+
 import java.io.File;
 import java.util.logging.Logger;
 
@@ -27,7 +29,7 @@ public class Trainer {
 
 		EncogAdapter ea = new EncogAdapter();
 		int hiddenLayerSize = (int) Math.sqrt(inputs[0].length * outputs[0].length); // formula from forum
-		ea.train(inputs, outputs, hiddenLayerSize, 0.00001);
+		ea.train(inputs, outputs, hiddenLayerSize, Config.MAXIMUM_ERROR);
 		ea.saveToFile(filename);
 	}
 
