@@ -64,29 +64,69 @@ function displayChart(data) {
     }
     console.log(dataArray);
 
+    // convert object to two arrays [keys] and [values]
+
+    var langs = [];
+    var stats = [];
+
+    for (var property in data) {
+        if (data.hasOwnProperty(property)) {
+            langs.push(property);
+            stats.push(data[property])
+        }
+    }
+
+    console.log(langs);
+    console.log(stats);
+
+
+
+
     $('#chart').highcharts({
         chart: {
-            type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45,
-                beta: 0
-            }
+            type: 'bar'
         },
         title: {
-            text: 'Browser market shares at a specific website, 2014'
+            text: 'Results'
         },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                depth: 35
+        xAxis: {
+            categories: langs,
+            title: {
+                text: null
             }
         },
+        yAxis: {
+            min: 0,
+
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: false
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 100,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+
         series: [{
-            type: 'pie',
-            name: 'Browser share',
-            data: dataArray
+            name: 'Probability',
+            data: stats
         }]
     });
 
