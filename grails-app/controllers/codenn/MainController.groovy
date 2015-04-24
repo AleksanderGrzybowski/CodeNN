@@ -4,9 +4,6 @@ import org.kelog.end.Client
 
 class MainController {
 
-    def index() {
-    }
-
     def ask(String snippet) {
         Client client = new Client();
 	    def map;
