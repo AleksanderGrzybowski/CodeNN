@@ -63,3 +63,7 @@ final
 public
 private
 protected
+base
+using
+function
+begin
