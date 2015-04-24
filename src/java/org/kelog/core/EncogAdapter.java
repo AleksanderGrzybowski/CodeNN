@@ -22,10 +22,11 @@ public class EncogAdapter {
 
 	private static Logger logger = Logger.getLogger(EncogAdapter.class.getName());
 
-	public EncogAdapter() {
+	private EncogAdapter() {
 	}
 
-	public void train(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
+	public static EncogAdapter fromTrainingData(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
+		EncogAdapter ea = new EncogAdapter();
 		if (inputs.length != outputs.length) {
 			throw new AssertionError("Numbers of input/output vectors don't match!");
 		}
@@ -33,15 +34,14 @@ public class EncogAdapter {
 
 		MLDataSet trainingSet = new BasicMLDataSet(inputs, outputs);
 
+		ea.network = new BasicNetwork();
+		ea.network.addLayer(new BasicLayer(null, true, inputs[0].length));
+		ea.network.addLayer(new BasicLayer(new ActivationSigmoid(), true, hiddenLayerSize));
+		ea.network.addLayer(new BasicLayer(new ActivationSigmoid(), false, outputs[0].length));
+		ea.network.getStructure().finalizeStructure();
+		ea.network.reset();
 
-		network = new BasicNetwork();
-		network.addLayer(new BasicLayer(null, true, inputs[0].length));
-		network.addLayer(new BasicLayer(new ActivationSigmoid(), true, hiddenLayerSize));
-		network.addLayer(new BasicLayer(new ActivationSigmoid(), false, outputs[0].length));
-		network.getStructure().finalizeStructure();
-		network.reset();
-
-		final ResilientPropagation train = new ResilientPropagation(network, trainingSet);
+		final ResilientPropagation train = new ResilientPropagation(ea.network, trainingSet);
 
 		int epoch = 1;
 		do {
@@ -57,6 +57,8 @@ public class EncogAdapter {
 		train.finishTraining();
 
 		Encog.getInstance().shutdown(); // is this needed
+
+		return ea;
 	}
 
 	public double[] ask(double[] input) {
@@ -68,8 +70,10 @@ public class EncogAdapter {
 		EncogDirectoryPersistence.saveObject(new File(fname), network);
 	}
 
-	public void restoreFromFile(String fname) {
+	public static EncogAdapter fromFile(String fname) {
 		logger.info("Restoring network from " + fname);
-		network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(fname));
+		EncogAdapter ea = new EncogAdapter();
+		ea.network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(fname));
+		return ea;
 	}
 }

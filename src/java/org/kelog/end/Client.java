@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class Client {
 
-	EncogAdapter adapter = new EncogAdapter();
+	EncogAdapter adapter;
 
 	private static Logger logger = Logger.getLogger(Client.class.getName());
 
@@ -22,7 +22,7 @@ public class Client {
 			throw new RuntimeException();
 		}
 
-		adapter.restoreFromFile(Config.NETWORK_FILENAME);
+		adapter = EncogAdapter.fromFile(Config.NETWORK_FILENAME);
 	}
 
 	private static EnumMap<Language, Double> arrayToMap(double[] resp) {

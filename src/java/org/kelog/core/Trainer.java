@@ -27,9 +27,8 @@ public class Trainer {
 			}
 		}
 
-		EncogAdapter ea = new EncogAdapter();
 		int hiddenLayerSize = (int) Math.sqrt(inputs[0].length * outputs[0].length); // formula from forum
-		ea.train(inputs, outputs, hiddenLayerSize, Config.MAXIMUM_ERROR);
+		EncogAdapter ea = EncogAdapter.fromTrainingData(inputs, outputs, hiddenLayerSize, Config.MAXIMUM_ERROR);
 		ea.saveToFile(filename);
 	}
 
