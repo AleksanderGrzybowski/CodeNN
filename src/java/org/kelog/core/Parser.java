@@ -37,20 +37,25 @@ public class Parser {
 	}
 
 	private static double[] parse(String snippet) {
-		StringBuilder sb = new StringBuilder(snippet);
+		int index = 0;
+		int length = snippet.length();
 		double[] histogram = new double[Words.words.size()];
 
-		outer:
-		while (sb.length() != 0) {
-			for (String guess : Words.words) {
-				if (sb.toString().startsWith(guess)) {
-					sb.delete(0, guess.length());
-					histogram[Words.words.indexOf(guess)] += 1;
-					continue outer;
+		try {
+			outer:
+			while (index < length) {
+				for (String guess : Words.words) {
+					if (snippet.startsWith(guess, index)) {
+						index += guess.length();
+						histogram[Words.words.indexOf(guess)] += 1;
+						continue outer;
+					}
 				}
+				index++;
 			}
-			sb.deleteCharAt(0);
+		} catch (IndexOutOfBoundsException ignored) {
 		}
+
 		return histogram;
 	}
 }
