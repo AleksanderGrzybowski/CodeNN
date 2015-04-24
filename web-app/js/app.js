@@ -5,12 +5,13 @@ $('#send').click(function () {
         snippet: $('#snippet').val()
     }).done(function (data) {
         console.log("Got it! From server:");
-        console.log(JSON.stringify(data));
-        $('#response').text(JSON.stringify(data));
-        if (data.success) {
+        console.log(data);
+        if (data.success == true) {
+            console.log("Displaying chart");
             delete data.success;
             displayChart(data);
         } else {
+            console.log("Displaying error");
             displayError(data.message);
         }
     }).fail(function (jqxhr, textStatus, error) {
@@ -20,7 +21,12 @@ $('#send').click(function () {
 });
 
 function displayError(errorString) {
-    alert(errorString);
+    $('#chart').remove();
+    var newDiv = $('<div></div>');
+    newDiv.text("There was an error: " + errorString);
+    newDiv.addClass("bg-danger")
+    newDiv.attr('id', 'chart');
+    $('#forchart').append(newDiv);
 }
 
 function displayChart(data) {

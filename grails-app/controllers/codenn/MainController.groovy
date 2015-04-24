@@ -8,6 +8,10 @@ class MainController {
         Client client = new Client();
 	    def map;
 	    try {
+		    if (snippet == "") {
+			    throw new RuntimeException("Snippet empty")
+		    }
+
 		    map = client.match(snippet) // handle errors!
 		    map = new HashMap(map)
 		    map.put('success', true)
