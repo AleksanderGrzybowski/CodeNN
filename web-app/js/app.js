@@ -1,3 +1,19 @@
+var premadeSnippets = {
+    c: 'int main(void)\n\tprintf("Hello world");\n\treturn 0;\n}',
+    ruby: 'def hello(user)\n\tputs "Hello, dear #{user}"\n\nhello("Alexander")',
+    java: 'public class HelloWorld {\n\tpublic static void main(String[] args)\n\t\tSystem.out.println("Hello world");\n\t\treturn 0;\n\t}\n}'
+};
+
+for (var lang in premadeSnippets) {
+    $("#" + lang).click(function (l) {
+            return function () { // i can't express enough how i hate JS
+                $('#snippet').text(premadeSnippets[l])
+            }
+        }(lang)
+    )
+}
+
+
 $('#send').click(function () {
     console.log("Click");
     $.getJSON("/CodeNN/main/ask", {
