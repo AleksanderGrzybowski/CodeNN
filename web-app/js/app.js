@@ -13,7 +13,6 @@ for (var lang in premadeSnippets) {
     )
 }
 
-
 $('#send').click(function () {
     console.log("Click");
     $.getJSON("/CodeNN/main/ask", {
@@ -36,8 +35,8 @@ $('#send').click(function () {
 
 });
 
-$("textarea").keydown(function(e) {
-    if(e.keyCode === 9) { // tab was pressed
+$("textarea").keydown(function (e) {
+    if (e.keyCode === 9) { // tab was pressed
         // get caret position/selection
         var start = this.selectionStart;
         var end = this.selectionEnd;
@@ -47,8 +46,8 @@ $("textarea").keydown(function(e) {
 
         // set textarea value to: text before caret + tab + text after caret
         $this.val(value.substring(0, start)
-        + "\t"
-        + value.substring(end));
+            + "\t"
+            + value.substring(end));
 
         // put caret at right position again (add one for the tab)
         this.selectionStart = this.selectionEnd = start + 1;
@@ -62,7 +61,7 @@ function displayError(errorString) {
     $('#chart').remove();
     var newDiv = $('<div></div>');
     newDiv.text("There was an error: " + errorString);
-    newDiv.addClass("bg-danger")
+    newDiv.addClass("bg-danger");
     newDiv.attr('id', 'chart');
     $('#forchart').append(newDiv);
 }
@@ -72,13 +71,6 @@ function displayChart(data) {
     var newDiv = $('<div></div>');
     newDiv.attr('id', 'chart');
     $('#forchart').append(newDiv);
-
-
-    var dataArray = [];
-    for (key in data) {
-        dataArray.push([key, data[key]])
-    }
-    console.log(dataArray);
 
     // convert object to two arrays [keys] and [values]
 
@@ -94,8 +86,6 @@ function displayChart(data) {
 
     console.log(langs);
     console.log(stats);
-
-
 
 
     $('#chart').highcharts({
@@ -145,8 +135,4 @@ function displayChart(data) {
             data: stats
         }]
     });
-
 }
-
-
-
