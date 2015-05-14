@@ -21,6 +21,7 @@ public class Words {
 			logger.info("List of words loaded, count: " + words.size());
 		} catch (IOException e) {
 			logger.warning("Error creating words list " + e);
+			throw new RuntimeException();
 		}
 	}
 }

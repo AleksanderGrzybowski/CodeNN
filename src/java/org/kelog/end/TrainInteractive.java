@@ -9,16 +9,16 @@ public class TrainInteractive {
 		Scanner scanner = new Scanner(System.in);
 		String input;
 
-		String trainingDir = Config.TRDATA_DIRECTORY;
+		String trainingDir = Config.TRAINING_DATA_DIRECTORY;
 		String networkFilename = Config.NETWORK_FILENAME;
 
-		System.out.printf("Give path for training data (empty=default): ");
+		System.out.printf("Give path for training data (empty=%s): ", trainingDir);
 		input = scanner.nextLine();
 		if (input.length() != 0) {
 			trainingDir = input;
 		}
 
-		System.out.printf("Give path for network blob (empty=default): ");
+		System.out.printf("Give path for network blob (empty=%s): ", networkFilename);
 		input = scanner.nextLine();
 		if (input.length() != 0) {
 			networkFilename = input;

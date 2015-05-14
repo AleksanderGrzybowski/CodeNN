@@ -1,16 +1,19 @@
 package org.kelog.core;
 
 public class Utils {
-	public static void normalizeHistogram(double[] histogram) { // mutating
+	public static double[] normalizedHistogram(double[] histogram) {
+		double[] h = histogram.clone();
 		double sum = 0.0;
-		for (double val : histogram) {
+
+		for (double val : h) {
 			sum += val;
 		}
 		if (sum == 0) {
-			return; // would create NaN's
+			return h;
 		}
-		for (int i = 0; i < histogram.length; ++i) {
-			histogram[i] /= sum;
+		for (int i = 0; i < h.length; ++i) {
+			h[i] /= sum;
 		}
+		return h;
 	}
 }

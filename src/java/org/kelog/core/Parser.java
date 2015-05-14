@@ -12,7 +12,7 @@ public class Parser {
 	public static double[] histogram(String snippet) {
 		double[] histogram = parse(snippet);
 
-		Utils.normalizeHistogram(histogram);
+		histogram = Utils.normalizedHistogram(histogram);
 		return histogram;
 	}
 
