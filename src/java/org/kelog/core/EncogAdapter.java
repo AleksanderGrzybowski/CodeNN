@@ -26,7 +26,7 @@ public class EncogAdapter {
 	}
 
 	public static EncogAdapter fromTrainingData(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
-		EncogAdapter ea = new EncogAdapter();
+		EncogAdapter adapter = new EncogAdapter();
 		if (inputs.length != outputs.length) {
 			throw new AssertionError("Numbers of input/output vectors don't match!");
 		}
@@ -34,14 +34,14 @@ public class EncogAdapter {
 
 		MLDataSet trainingSet = new BasicMLDataSet(inputs, outputs);
 
-		ea.network = new BasicNetwork();
-		ea.network.addLayer(new BasicLayer(null, true, inputs[0].length));
-		ea.network.addLayer(new BasicLayer(new ActivationSigmoid(), true, hiddenLayerSize));
-		ea.network.addLayer(new BasicLayer(new ActivationSigmoid(), false, outputs[0].length));
-		ea.network.getStructure().finalizeStructure();
-		ea.network.reset();
+		adapter.network = new BasicNetwork();
+		adapter.network.addLayer(new BasicLayer(null, true, inputs[0].length));
+		adapter.network.addLayer(new BasicLayer(new ActivationSigmoid(), true, hiddenLayerSize));
+		adapter.network.addLayer(new BasicLayer(new ActivationSigmoid(), false, outputs[0].length));
+		adapter.network.getStructure().finalizeStructure();
+		adapter.network.reset();
 
-		final ResilientPropagation train = new ResilientPropagation(ea.network, trainingSet);
+		final ResilientPropagation train = new ResilientPropagation(adapter.network, trainingSet);
 
 		int epoch = 1;
 		do {
@@ -58,22 +58,22 @@ public class EncogAdapter {
 
 		Encog.getInstance().shutdown(); // is this needed
 
-		return ea;
+		return adapter;
 	}
 
 	public double[] ask(double[] input) {
 		return network.compute(new BasicMLData(input)).getData();
 	}
 
-	public void saveToFile(String fname) {
-		logger.info("Saving network to file " + fname);
-		EncogDirectoryPersistence.saveObject(new File(fname), network);
+	public void saveToFile(String filename) {
+		logger.info("Saving network to file " + filename);
+		EncogDirectoryPersistence.saveObject(new File(filename), network);
 	}
 
-	public static EncogAdapter fromFile(String fname) {
-		logger.info("Restoring network from " + fname);
-		EncogAdapter ea = new EncogAdapter();
-		ea.network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(fname));
-		return ea;
+	public static EncogAdapter fromFile(String filename) {
+		logger.info("Restoring network from " + filename);
+		EncogAdapter adapter = new EncogAdapter();
+		adapter.network = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(filename));
+		return adapter;
 	}
 }

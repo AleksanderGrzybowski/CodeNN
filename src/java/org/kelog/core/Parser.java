@@ -23,31 +23,33 @@ public class Parser {
 
 	private static String readFromFile(File file) {
 		try {
+			// because of Java 7, we can't use streams to read that file
 			logger.info("Reading file " + file.getAbsolutePath());
-			String content = "";
+			StringBuilder content = new StringBuilder();
 
 			for (String line : Files.readAllLines(file.toPath(), Charset.defaultCharset())) {
-				content += line + "\n";
+				content.append(line);
+				content.append("\n");
 			}
-			return content;
+			return content.toString();
 		} catch (IOException e) {
 			logger.warning("Failed to read from file " + file.getAbsolutePath() + " " + e);
-			throw new RuntimeException(e);
+			throw new InternalError();
 		}
 	}
 
 	private static double[] parse(String snippet) {
 		int index = 0;
 		int length = snippet.length();
-		double[] histogram = new double[Words.words.size()];
+		double[] histogram = new double[Words.list.size()];
 
 		try {
 			outer:
 			while (index < length) {
-				for (String guess : Words.words) {
+				for (String guess : Words.list) {
 					if (snippet.startsWith(guess, index)) {
 						index += guess.length();
-						histogram[Words.words.indexOf(guess)] += 1;
+						histogram[Words.list.indexOf(guess)] += 1;
 						continue outer;
 					}
 				}
