@@ -10,27 +10,32 @@
 
 <body>
 
-<div class="row">
-    <div class="col-md-4 col-md-push-1">
-        <h1 class="text-center">CodeNN</h1>
-        <h5 class="text-center">A neural network code recognition system</h5>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="text-center">CodeNN</h1>
+            <h5 class="text-center">A neural network code recognition system</h5>
 
-        <div class="form-group">
+            <div class="form-group">
 
-            <label for="snippet">Pick example here:</label>
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-sm" id="c">C</button>
-                <button type="button" class="btn btn-primary btn-sm" id="ruby">Ruby</button>
-                <button type="button" class="btn btn-primary btn-sm" id="java">Java</button>
-            </div>
-            <textarea id="snippet" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
+                <div style="margin-bottom: 20px;">
+                    <label for="snippet">Pick example here:</label>
 
-            <div class="text-center">
-                <button id="send" class="btn btn-primary">Send</button>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-sm" id="c">C</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="ruby">Ruby</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="java">Java</button>
+                    </div>
+                </div>
+                <textarea id="snippet" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
+
+                <div class="text-center">
+                    <button id="send" class="btn btn-primary">Send</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 col-md-push-1" id="forchart">
+        <div class="col-md-6" id="forchart">
+        </div>
     </div>
 </div>
 
