@@ -1,3 +1,4 @@
+# generic symbols
 ~
 `
 !
@@ -29,7 +30,7 @@ _
 >
 .
 ?
-/
+# BASH
 if
 then
 fi
@@ -37,6 +38,9 @@ return
 case
 esac
 exit
+do
+done
+# C
 include
 define
 char
@@ -44,26 +48,56 @@ int
 float
 double
 bool
+# CPP
 class
 struct
 typename
 delete
 static
 virtual
+# CSHARP
+base
+using
+delegate
+namespace
+override
+# JAVA
+final
+public
+private
+protected
+extends
+super
+try
+catch
+finally
+package
+# JAVASCRIPT
+prototype
+var
+function
+# PASCAL
+begin
+uses
+type
+of
+# PERL
 use
 sub
 my
 import
 from
+# PYTHON
 def
 self
+not
+yield
+except
+pass
+raise
+# RUBY
 module
 end
-final
-public
-private
-protected
-base
-using
-function
-begin
+::
+require
+rescue
