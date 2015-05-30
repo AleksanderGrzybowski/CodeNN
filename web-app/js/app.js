@@ -1,6 +1,6 @@
 var premadeSnippets = {
     c: 'int main(void)\n\tprintf("Hello world");\n\treturn 0;\n}',
-    ruby: 'def hello(user)\n\tputs "Hello, dear #{user}"\n\nhello("Alexander")',
+    bash: '# set timezone\nif [ -z "$TZ" -a -e /etc/timezone ]; then\n\tTZ=`cat /etc/timezone`\n\texport TZ\nfi\n',
     java: 'public class HelloWorld {\n\tpublic static void main(String[] args)\n\t\tSystem.out.println("Hello world");\n\t\treturn 0;\n\t}\n}'
 };
 
