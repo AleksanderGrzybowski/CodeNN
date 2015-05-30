@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.logging.Logger;
 
+import static org.kelog.core.CommentRemover.removeComments;
+
 public class Parser {
 	private static Logger logger = Logger.getLogger(Parser.class.getName());
 
@@ -18,7 +20,8 @@ public class Parser {
 
 	public static double[] histogram(File file) {
 		String snippet = readFromFile(file);
-		return histogram(snippet);
+        snippet = removeComments(snippet);
+        return histogram(snippet);
 	}
 
 	private static String readFromFile(File file) {
