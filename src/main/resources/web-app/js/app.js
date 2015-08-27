@@ -15,20 +15,14 @@ for (var lang in premadeSnippets) {
 
 $('#send').click(function () {
     console.log("Click");
-    $.getJSON("/CodeNN/main/ask", {
+    $.getJSON("/ask", {
         format: "json",
         snippet: $('#snippet').val()
     }).done(function (data) {
         console.log("Got it! From server:");
         console.log(data);
-        if (data.success == true) {
-            console.log("Displaying chart");
-            delete data.success;
-            displayChart(data);
-        } else {
-            console.log("Displaying error");
-            displayError(data.message);
-        }
+        console.log("Displaying chart");
+        displayChart(data);
     }).fail(function (jqxhr, textStatus, error) {
         displayError("An unknown error: " + textStatus + " " + error)
     })
