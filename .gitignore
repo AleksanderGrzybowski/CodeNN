@@ -19,3 +19,4 @@ stacktrace.log
 .classpath
 *.iml
 .project
+bower_components
