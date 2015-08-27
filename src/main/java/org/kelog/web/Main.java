@@ -1,12 +1,10 @@
 package org.kelog.web;
 
-import org.kelog.core.Language;
 import org.kelog.end.Client;
 import spark.Spark;
 
-import java.util.EnumMap;
-
 import static spark.Spark.get;
+import static spark.Spark.halt;
 
 public class Main {
 
@@ -14,13 +12,16 @@ public class Main {
         Spark.staticFileLocation("web-app");
 
         get("/ask", (req, res) -> {
-            String snippet = req.queryParams("snippet");
+            try {
+                String snippet = req.queryParams("snippet");
 
-            Client client = new Client();
-            EnumMap<Language, Double> result = client.match(snippet);
+                Client client = new Client();
 
-            return result;
+                return client.match(snippet);
+            } catch (Exception e) {
+                halt(500);
+                return "";
+            }
         }, new JsonTransformer());
-
     }
 }
