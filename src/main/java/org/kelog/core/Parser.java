@@ -2,7 +2,6 @@ package org.kelog.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.logging.Logger;
 
@@ -26,15 +25,8 @@ public class Parser {
 
 	private static String readFromFile(File file) {
 		try {
-			// because of Java 7, we can't use streams to read that file
 			logger.info("Reading file " + file.getAbsolutePath());
-			StringBuilder content = new StringBuilder();
-
-			for (String line : Files.readAllLines(file.toPath(), Charset.defaultCharset())) {
-				content.append(line);
-				content.append("\n");
-			}
-			return content.toString();
+			return new String(Files.readAllBytes(file.toPath()));
 		} catch (IOException e) {
 			logger.warning("Failed to read from file " + file.getAbsolutePath() + " " + e);
 			throw new InternalError();

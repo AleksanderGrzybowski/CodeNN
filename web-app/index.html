@@ -1,23 +1,25 @@
 <html>
 <head>
     <title>CodeNN</title>
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
-    <script type="text/javascript" src="js/highcharts.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="css/app.css"/>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script type="text/javascript" src="bower_components/highcharts/highcharts.js"></script>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
 </head>
 
 <body>
 
 <div class="container">
     <div class="row">
+        <div class="col-md-12" style="margin-bottom: 30px;">
+            <h1 class="text-center">
+                CodeNN
+            </h1>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
-            <h1 class="text-center">CodeNN</h1>
-            <h5 class="text-center">A neural network code recognition system</h5>
-
             <div class="form-group">
-
                 <div style="margin-bottom: 20px;">
                     <label for="snippet">Pick example here:</label>
 
@@ -27,21 +29,24 @@
                         <button type="button" class="btn btn-primary btn-sm" id="java">Java</button>
                     </div>
                 </div>
-                <textarea id="snippet" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
+                <textarea id="snippet" rows="10" class="form-control"
+                          style="margin-bottom: 20px; font-family: monospace"></textarea>
 
-                <div class="text-center">
-                    <button id="send" class="btn btn-primary">Send</button>
-                </div>
+                <button id="send" class="btn btn-success center-block">Send</button>
             </div>
         </div>
         <div class="col-md-6" id="forchart">
+            <div class="panel panel-default" id="welcome-message">
+                <h3 class="text-center">Type some code in the box...</h3>
+            </div>
+            <div id="chart"></div>
         </div>
     </div>
 </div>
 
 </body>
 
-<script src="js/app.js">
+<script src="app.js">
 </script>
 
 </html>
