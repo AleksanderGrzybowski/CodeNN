@@ -3,13 +3,15 @@ package org.kelog.web;
 import org.kelog.end.Client;
 import spark.Spark;
 
+import java.io.File;
+
 import static spark.Spark.get;
 import static spark.Spark.halt;
 
 public class Main {
 
     public static void main(String[] args) {
-        Spark.staticFileLocation("web-app");
+        Spark.externalStaticFileLocation(System.getProperty("user.dir") + File.separator + "web-app");
 
         get("/ask", (req, res) -> {
             try {
