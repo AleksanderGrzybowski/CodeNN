@@ -53,6 +53,7 @@ $(function () {
     });
 
     function displayChart(data) {
+        $('#welcome-message').remove();
         var $chart = $('#chart');
         $chart.empty();
 
