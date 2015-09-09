@@ -1,9 +1,12 @@
 package org.kelog.core;
 
+import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 import org.encog.Encog;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLDataSet;
@@ -15,6 +18,7 @@ import org.encog.persist.EncogDirectoryPersistence;
 import org.kelog.exceptions.EpochNumberExceeded;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,8 +40,10 @@ public class Trainer {
         this.maximumError = maximumError;
     }
 
-    public void createNetwork(String directory, String filename) {
-        int numberOfFiles = countTrainingFiles(directory);
+    public void createNetwork(String zipFilename, String filename) throws IOException {
+        String trdataDir = unzipTrainingData(zipFilename);
+
+        int numberOfFiles = countTrainingFiles(trdataDir);
         double[][] inputs = new double[numberOfFiles][words.list.size()];
         double[][] outputs = new double[numberOfFiles][Language.values().length];
 
@@ -49,7 +55,7 @@ public class Trainer {
         int index = 0;
         for (Language lang : Language.values()) {
             //noinspection ConstantConditions
-            for (File source : new File(directory + "/" + lang).listFiles()) {
+            for (File source : new File(trdataDir + "/" + lang).listFiles()) {
                 logger.log(Level.INFO, "Going through " + source.getName());
                 inputs[index] = parser.histogram(source);
                 outputs[index][lang.ordinal()] = 1.0; // others are 0-s
@@ -63,6 +69,19 @@ public class Trainer {
 
         logger.info("Saving network to file " + filename);
         EncogDirectoryPersistence.saveObject(new File(filename), network);
+    }
+
+    private String unzipTrainingData(String zipFilename) throws IOException {
+        try {
+            ZipFile zipFile = new ZipFile(zipFilename);
+            File tempDir = Files.createTempDir();
+
+            String destinationPath = tempDir.getAbsolutePath();
+            zipFile.extractAll(destinationPath);
+            return destinationPath;
+        } catch (ZipException e) {
+            throw new IOException(e); // not so important
+        }
     }
 
     private static int countTrainingFiles(String directory) {
@@ -109,18 +128,23 @@ public class Trainer {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        try {
+            Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Give path with training data: ");
-        String trainingDir = scanner.nextLine();
+            System.out.print("Give path to zip with training data: ");
+            String trainingZipFilename = scanner.nextLine();
 
-        System.out.print("Give path for network blob: ");
-        String networkFilename = scanner.nextLine();
+            System.out.print("Give path for network blob: ");
+            String networkFilename = scanner.nextLine();
 
-        Injector injector = Guice.createInjector(new MainModule());
-        Trainer trainer = injector.getInstance(Trainer.class);
+            Injector injector = Guice.createInjector(new MainModule());
+            Trainer trainer = injector.getInstance(Trainer.class);
 
-        trainer.createNetwork(trainingDir, networkFilename);
-        Encog.getInstance().shutdown();
+            trainer.createNetwork(trainingZipFilename, networkFilename);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Encog.getInstance().shutdown();
+        }
     }
 }
