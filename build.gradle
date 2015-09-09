@@ -9,12 +9,12 @@ repositories {
     mavenCentral()
 }
 
-task runServer(type:JavaExec) {
+task runServer(type: JavaExec, dependsOn: build) {
     main = 'org.kelog.web.Main'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task runTraining(type:JavaExec) {
+task runTraining(type: JavaExec, dependsOn: build) {
     main = 'org.kelog.core.Trainer'
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
