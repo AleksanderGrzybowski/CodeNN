@@ -1,50 +1,55 @@
 package org.kelog.core;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.logging.Logger;
 
-import static org.kelog.core.CommentRemover.removeComments;
-
+@Singleton
 public class Parser {
-	private static Logger logger = Logger.getLogger(Parser.class.getName());
+	private CommentRemover commentRemover;
+	private Words words;
 
-	public static double[] histogram(String snippet) {
-		double[] histogram = parse(snippet);
-
-		histogram = Utils.normalizedHistogram(histogram);
-		return histogram;
+	@Inject
+	public Parser(CommentRemover commentRemover, Words words) {
+		this.commentRemover = commentRemover;
+		this.words = words;
 	}
 
-	public static double[] histogram(File file) {
+	public double[] histogram(String snippet) {
+		double[] histogram = parse(snippet);
+
+		return normalizedHistogram(histogram);
+	}
+
+	public double[] histogram(File file) {
 		String snippet = readFromFile(file);
-        snippet = removeComments(snippet);
+        snippet = commentRemover.removeComments(snippet);
         return histogram(snippet);
 	}
 
-	private static String readFromFile(File file) {
+	private String readFromFile(File file) {
 		try {
-			logger.info("Reading file " + file.getAbsolutePath());
 			return new String(Files.readAllBytes(file.toPath()));
 		} catch (IOException e) {
-			logger.warning("Failed to read from file " + file.getAbsolutePath() + " " + e);
-			throw new InternalError();
+			throw new AssertionError();
 		}
 	}
 
-	private static double[] parse(String snippet) {
+	private double[] parse(String snippet) {
 		int index = 0;
 		int length = snippet.length();
-		double[] histogram = new double[Words.list.size()];
+		double[] histogram = new double[words.list.size()];
 
 		try {
 			outer:
 			while (index < length) {
-				for (String guess : Words.list) {
+				for (String guess : words.list) {
 					if (snippet.startsWith(guess, index)) {
 						index += guess.length();
-						histogram[Words.list.indexOf(guess)] += 1;
+						histogram[words.list.indexOf(guess)] += 1;
 						continue outer;
 					}
 				}
@@ -54,5 +59,22 @@ public class Parser {
 		}
 
 		return histogram;
+	}
+
+	public double[] normalizedHistogram(double[] histogram) {
+		double[] h = histogram.clone();
+		double sum = 0.0;
+
+		for (double val : h) {
+			sum += val;
+		}
+
+		if (sum != 0) {
+			for (int i = 0; i < h.length; ++i) {
+				h[i] /= sum;
+			}
+		}
+
+		return h;
 	}
 }

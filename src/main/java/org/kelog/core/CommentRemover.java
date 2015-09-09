@@ -1,24 +1,26 @@
 package org.kelog.core;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class CommentRemover {
 
-    public static String removeComments(String fileContent) {
-        //TODO if sth fails, just return original content xD
+    public String removeComments(String fileContent) {
+        // if sth fails, just return original content xD
+        // cheap but does not do too much harm xD
 
         try {
             fileContent = stripC(fileContent);
             fileContent = stripCPPandRuby(fileContent);
-        } catch (Exception e) {
-            System.out.println("Error while removing comments, returning original content!");
+        } catch (Exception ignored) {
         }
         return fileContent;
     }
 
-    private static String stripC(String fileContent) {
+    private String stripC(String fileContent) {
         StringBuilder sb = new StringBuilder(fileContent);
 
         // remove from /* to */
-
         while (sb.indexOf("/*") != -1) {
             int left = sb.indexOf("/*");
             int right = sb.indexOf("*/");
@@ -28,7 +30,7 @@ public class CommentRemover {
         return sb.toString();
     }
 
-    private static String stripCPPandRuby(String fileContent) {
+    private String stripCPPandRuby(String fileContent) {
         String[] lines = fileContent.split("\n"); // mutable!
 
         for (int i = 0; i < lines.length; i++) {
@@ -44,17 +46,20 @@ public class CommentRemover {
         return sb.toString();
     }
 
-    private static String stripCPPandRubySingleLine(String line) {
+    private String stripCPPandRubySingleLine(String line) {
         // remove // and # to the end of line
 
         StringBuilder sb = new StringBuilder(line);
         int i;
+
         while ((i = sb.indexOf("//")) != -1) {
             sb.delete(i, sb.length());
         }
+
         while ((i = sb.indexOf("#")) != -1) {
             sb.delete(i, sb.length());
         }
+
         return sb.toString();
     }
 }
