@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
+import org.encog.Encog;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLDataSet;
@@ -118,5 +119,6 @@ public class Trainer {
         Trainer trainer = injector.getInstance(Trainer.class);
 
         trainer.createNetwork(trainingDir, networkFilename);
+        Encog.getInstance().shutdown();
     }
 }
