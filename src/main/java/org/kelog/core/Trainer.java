@@ -108,10 +108,10 @@ public class Trainer {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Give path with training data");
+        System.out.print("Give path with training data: ");
         String trainingDir = scanner.nextLine();
 
-        System.out.println("Give path for network blob: ");
+        System.out.print("Give path for network blob: ");
         String networkFilename = scanner.nextLine();
 
         Injector injector = Guice.createInjector(new MainModule());
