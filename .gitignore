@@ -20,3 +20,5 @@ stacktrace.log
 *.iml
 .project
 bower_components
+build
+.gradle
