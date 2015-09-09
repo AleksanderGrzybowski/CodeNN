@@ -16,6 +16,7 @@ import org.kelog.exceptions.EpochNumberExceeded;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Trainer {
@@ -49,6 +50,7 @@ public class Trainer {
         for (Language lang : Language.values()) {
             //noinspection ConstantConditions
             for (File source : new File(directory + "/" + lang).listFiles()) {
+                logger.log(Level.INFO, "Going through " + source.getName());
                 inputs[index] = parser.histogram(source);
                 outputs[index][lang.ordinal()] = 1.0; // others are 0-s
 
