@@ -49,7 +49,7 @@ public class Trainer {
         int index = 0;
         for (Language lang : Language.values()) {
             //noinspection ConstantConditions
-            for (File source : new File(trdataDir + "/" + lang).listFiles()) {
+            for (File source : new File(trdataDir + File.separator + lang).listFiles()) {
                 logger.log(Level.INFO, "Going through " + source.getName());
                 inputs[index] = parser.histogram(source);
                 outputs[index][lang.ordinal()] = 1.0; // others are 0-s
@@ -80,13 +80,12 @@ public class Trainer {
         int count = 0;
         for (Language lang : Language.values()) {
             //noinspection ConstantConditions
-            count += new File(directory + "/" + lang).listFiles().length;
+            count += new File(directory + File.separator + lang).listFiles().length;
         }
         return count;
     }
 
     public BasicNetwork doTraining(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
-//        EncogAdapter adapter = new EncogAdapter();
         if (inputs.length != outputs.length) {
             throw new AssertionError("Numbers of input/output vectors don't match!");
         }

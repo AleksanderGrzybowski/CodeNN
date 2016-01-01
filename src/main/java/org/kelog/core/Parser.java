@@ -1,5 +1,6 @@
 package org.kelog.core;
 
+import com.google.common.base.Charsets;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -32,7 +33,7 @@ public class Parser {
 
 	private String readFromFile(File file) {
 		try {
-			return new String(Files.readAllBytes(file.toPath()));
+			return new String(Files.readAllBytes(file.toPath()), Charsets.UTF_8);
 		} catch (IOException e) {
 			throw new AssertionError();
 		}
