@@ -1,5 +1,5 @@
-def TRAINING_DATA_ZIP='trdata/trdata.zip'
-def NETWORK_FILE='/tmp/network.eg'
+def TRAINING_DATA_ZIP = 'trdata' + File.separator + 'trdata.zip'
+def NETWORK_FILE = File.createTempDir().toString() + File.separator + 'network.eg'
 
 
 group 'codenn'
@@ -19,9 +19,11 @@ task runTraining(type: JavaExec, dependsOn: build) {
     args TRAINING_DATA_ZIP, NETWORK_FILE
 }
 
+// Worse, but simpler than using node plugin to get node
+// just to use bower once...
 task bowerInstall(type: Exec) {
-    workingDir './web-app'
-    commandLine '/usr/bin/env', 'bower', 'install'
+    workingDir 'web-app'
+    commandLine  'bower', 'install'
 }
 
 task runServer(type: JavaExec, dependsOn: [build, bowerInstall, runTraining]) {
