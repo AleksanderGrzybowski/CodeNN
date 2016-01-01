@@ -1,6 +1,4 @@
 def TRAINING_DATA_ZIP = 'trdata' + File.separator + 'trdata.zip'
-def NETWORK_FILE = File.createTempDir().toString() + File.separator + 'network.eg'
-
 
 group 'codenn'
 version '1.0-SNAPSHOT'
@@ -13,12 +11,6 @@ repositories {
     mavenCentral()
 }
 
-task runTraining(type: JavaExec, dependsOn: build) {
-    main = 'org.kelog.core.Trainer'
-    classpath = sourceSets.main.runtimeClasspath
-    args TRAINING_DATA_ZIP, NETWORK_FILE
-}
-
 // Worse, but simpler than using node plugin to get node
 // just to use bower once...
 task bowerInstall(type: Exec) {
@@ -26,10 +18,10 @@ task bowerInstall(type: Exec) {
     commandLine  'bower', 'install'
 }
 
-task runServer(type: JavaExec, dependsOn: [build, bowerInstall, runTraining]) {
+task runServer(type: JavaExec, dependsOn: [build, bowerInstall]) {
     main = 'org.kelog.web.Main'
     classpath = sourceSets.main.runtimeClasspath
-    args TRAINING_DATA_ZIP, NETWORK_FILE
+    args TRAINING_DATA_ZIP
 }
 
 

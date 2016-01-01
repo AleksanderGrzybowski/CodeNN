@@ -1,19 +1,16 @@
 package org.kelog.core;
 
 import com.google.common.io.Files;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import org.encog.Encog;
 import org.encog.engine.network.activation.ActivationSigmoid;
 import org.encog.ml.data.MLDataSet;
 import org.encog.ml.data.basic.BasicMLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
-import org.encog.persist.EncogDirectoryPersistence;
 import org.kelog.exceptions.EpochNumberExceeded;
 
 import java.io.File;
@@ -38,14 +35,13 @@ public class Trainer {
         this.maximumError = maximumError;
     }
 
-    public void createNetwork(String zipFilename, String filename) throws IOException {
+    public BasicNetwork createNetwork(String zipFilename) throws IOException {
         String trdataDir = unzipTrainingData(zipFilename);
 
         int numberOfFiles = countTrainingFiles(trdataDir);
         double[][] inputs = new double[numberOfFiles][words.list.size()];
         double[][] outputs = new double[numberOfFiles][Language.values().length];
 
-        logger.info("Creating network and saving to " + filename);
 
         // each file is mapped to one row of inputs matrix and one row of outputs matrix
         // first: it's histogram
@@ -63,10 +59,8 @@ public class Trainer {
         }
 
         int hiddenLayerSize = (int) Math.sqrt(inputs[0].length * outputs[0].length); // formula from forum
-        BasicNetwork network = doTraining(inputs, outputs, hiddenLayerSize, maximumError);
 
-        logger.info("Saving network to file " + filename);
-        EncogDirectoryPersistence.saveObject(new File(filename), network);
+        return doTraining(inputs, outputs, hiddenLayerSize, maximumError);
     }
 
     private String unzipTrainingData(String zipFilename) throws IOException {
@@ -123,19 +117,5 @@ public class Trainer {
         train.finishTraining();
 
         return network;
-    }
-
-    public static void main(String[] args) {
-        try {
-            Trainer trainer = Guice.createInjector(new MainModule()).getInstance(Trainer.class);
-            
-            String trainingZipFilename = args[0];
-            String networkFilename = args[1];
-            trainer.createNetwork(trainingZipFilename, networkFilename);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            Encog.getInstance().shutdown();
-        }
     }
 }
