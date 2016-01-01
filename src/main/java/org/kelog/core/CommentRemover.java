@@ -2,16 +2,23 @@ package org.kelog.core;
 
 import com.google.inject.Singleton;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 @Singleton
 public class CommentRemover {
+
+    private static final String C_COMMENT_START = "/*";
+    private static final String C_COMMENT_END = "*/";
+    private static final String CPP_COMMENT_START = "//";
+    private static final String RUBY_COMMENT_START = "#";
 
     public String removeComments(String fileContent) {
         // if sth fails, just return original content xD
         // cheap but does not do too much harm xD
 
         try {
-            fileContent = stripC(fileContent);
-            fileContent = stripCPPandRuby(fileContent);
+            fileContent = stripCPPandRuby(stripC(fileContent)); // streams for poor!
         } catch (Exception ignored) {
         }
         return fileContent;
@@ -20,30 +27,19 @@ public class CommentRemover {
     private String stripC(String fileContent) {
         StringBuilder sb = new StringBuilder(fileContent);
 
-        // remove from /* to */
-        while (sb.indexOf("/*") != -1) {
-            int left = sb.indexOf("/*");
-            int right = sb.indexOf("*/");
-            sb.delete(left, right + 2);
+        int left, right;
+        while ((left = sb.indexOf(C_COMMENT_START)) != -1) {
+            right = sb.indexOf(C_COMMENT_END);
+            sb.delete(left, right + C_COMMENT_END.length());
         }
 
         return sb.toString();
     }
 
     private String stripCPPandRuby(String fileContent) {
-        String[] lines = fileContent.split("\n"); // mutable!
-
-        for (int i = 0; i < lines.length; i++) {
-            lines[i] = stripCPPandRubySingleLine(lines[i]);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (String line : lines) {
-            sb.append(line);
-            sb.append("\n");
-        }
-
-        return sb.toString();
+        return Arrays.stream(fileContent.split("\n"))
+                .map(this::stripCPPandRubySingleLine)
+                .collect(Collectors.joining("\n"));
     }
 
     private String stripCPPandRubySingleLine(String line) {
@@ -52,11 +48,11 @@ public class CommentRemover {
         StringBuilder sb = new StringBuilder(line);
         int i;
 
-        while ((i = sb.indexOf("//")) != -1) {
+        while ((i = sb.indexOf(CPP_COMMENT_START)) != -1) {
             sb.delete(i, sb.length());
         }
 
-        while ((i = sb.indexOf("#")) != -1) {
+        while ((i = sb.indexOf(RUBY_COMMENT_START)) != -1) {
             sb.delete(i, sb.length());
         }
 

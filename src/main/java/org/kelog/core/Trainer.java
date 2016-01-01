@@ -42,7 +42,6 @@ public class Trainer {
         double[][] inputs = new double[numberOfFiles][words.list.size()];
         double[][] outputs = new double[numberOfFiles][Language.values().length];
 
-
         // each file is mapped to one row of inputs matrix and one row of outputs matrix
         // first: it's histogram
         // second: predicted network response, that means: 1.0 at the correct position and 0.0's elsewhere
