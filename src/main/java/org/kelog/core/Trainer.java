@@ -3,7 +3,6 @@ package org.kelog.core;
 import com.google.common.io.Files;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.name.Named;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -19,7 +18,6 @@ import org.kelog.exceptions.EpochNumberExceeded;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -129,17 +127,10 @@ public class Trainer {
 
     public static void main(String[] args) {
         try {
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.print("Give path to zip with training data: ");
-            String trainingZipFilename = scanner.nextLine();
-
-            System.out.print("Give path for network blob: ");
-            String networkFilename = scanner.nextLine();
-
-            Injector injector = Guice.createInjector(new MainModule());
-            Trainer trainer = injector.getInstance(Trainer.class);
-
+            Trainer trainer = Guice.createInjector(new MainModule()).getInstance(Trainer.class);
+            
+            String trainingZipFilename = args[0];
+            String networkFilename = args[1];
             trainer.createNetwork(trainingZipFilename, networkFilename);
         } catch (Exception e) {
             e.printStackTrace();

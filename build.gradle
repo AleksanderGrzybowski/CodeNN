@@ -1,3 +1,7 @@
+def TRAINING_DATA_ZIP='trdata/trdata.zip'
+def NETWORK_FILE='/tmp/network.eg'
+
+
 group 'codenn'
 version '1.0-SNAPSHOT'
 
@@ -9,16 +13,23 @@ repositories {
     mavenCentral()
 }
 
-task runServer(type: JavaExec, dependsOn: build) {
-    main = 'org.kelog.web.Main'
-    classpath = sourceSets.main.runtimeClasspath
-}
-
 task runTraining(type: JavaExec, dependsOn: build) {
     main = 'org.kelog.core.Trainer'
     classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
+    args TRAINING_DATA_ZIP, NETWORK_FILE
 }
+
+task bowerInstall(type: Exec) {
+    workingDir './web-app'
+    commandLine '/usr/bin/env', 'bower', 'install'
+}
+
+task runServer(type: JavaExec, dependsOn: [build, bowerInstall, runTraining]) {
+    main = 'org.kelog.web.Main'
+    classpath = sourceSets.main.runtimeClasspath
+    args TRAINING_DATA_ZIP, NETWORK_FILE
+}
+
 
 dependencies {
     compile group: 'com.sparkjava', name: 'spark-core', version: '2.2'
