@@ -20,25 +20,28 @@ import java.util.logging.Logger;
 
 public class Trainer {
 
-    private static Logger logger = Logger.getLogger(Trainer.class.getName());
     private Parser parser;
     private Words words;
+    
     private int maximumEpochs;
     private double maximumError;
+    
+    private Logger logger;
 
     @Inject
     public Trainer(Words words, Parser parser, @Named("maximum-epochs") int maximumEpochs,
-                   @Named("maximum-error") double maximumError) {
+                   @Named("maximum-error") double maximumError, Logger logger) {
         this.words = words;
         this.parser = parser;
         this.maximumEpochs = maximumEpochs;
         this.maximumError = maximumError;
+        this.logger = logger;
     }
 
     public BasicNetwork createNetwork(String zipFilename) throws IOException {
-        String trdataDir = unzipTrainingData(zipFilename);
+        String trainingDataDir = unzipTrainingData(zipFilename);
 
-        int numberOfFiles = countTrainingFiles(trdataDir);
+        int numberOfFiles = countTrainingFiles(trainingDataDir);
         double[][] inputs = new double[numberOfFiles][words.list.size()];
         double[][] outputs = new double[numberOfFiles][Language.values().length];
 
@@ -48,7 +51,7 @@ public class Trainer {
         int index = 0;
         for (Language lang : Language.values()) {
             //noinspection ConstantConditions
-            for (File source : new File(trdataDir + File.separator + lang).listFiles()) {
+            for (File source : new File(trainingDataDir + File.separator + lang).listFiles()) {
                 logger.log(Level.INFO, "Going through " + source.getName());
                 inputs[index] = parser.histogram(source);
                 outputs[index][lang.ordinal()] = 1.0; // others are 0-s
@@ -84,6 +87,9 @@ public class Trainer {
         return count;
     }
 
+    /**
+     * Most of this is blatantly copied from the official tutorials (encog/encog-java-examples)
+     */
     public BasicNetwork doTraining(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
         if (inputs.length != outputs.length) {
             throw new AssertionError("Numbers of input/output vectors don't match!");

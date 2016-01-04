@@ -5,6 +5,10 @@ import com.google.inject.Singleton;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * This is cheap and dirty way, but hey, it works
+ * and doesn't do too much harm if it fails
+ */
 @Singleton
 public class CommentRemover {
 
@@ -14,8 +18,6 @@ public class CommentRemover {
     private static final String RUBY_COMMENT_START = "#";
 
     public String removeComments(String fileContent) {
-        // if sth fails, just return original content xD
-        // cheap but does not do too much harm xD
 
         try {
             fileContent = stripCPPandRuby(stripC(fileContent)); // streams for poor!
@@ -43,8 +45,6 @@ public class CommentRemover {
     }
 
     private String stripCPPandRubySingleLine(String line) {
-        // remove // and # to the end of line
-
         StringBuilder sb = new StringBuilder(line);
         int i;
 

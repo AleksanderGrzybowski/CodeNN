@@ -12,6 +12,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Seems bad to have a public field, but actually
+ * makes code a lot simpler. No need to create
+ * useless abstractions.
+ */
 @Singleton
 public class Words {
     public final List<String> list;

@@ -56,7 +56,7 @@ public class Parser {
 				}
 				index++;
 			}
-		} catch (IndexOutOfBoundsException ignored) {
+		} catch (IndexOutOfBoundsException ignored) { // not too pretty, but simpler
 		}
 
 		return histogram;
