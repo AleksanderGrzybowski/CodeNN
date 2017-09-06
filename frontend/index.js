@@ -40,7 +40,7 @@ function enableTabsInTextarea() {
 
 function setupSendButton() {
     $('#send').click(() => {
-        $.getJSON("http://localhost:8080/ask", {
+        $.getJSON("/ask", {
             format: "json",
             snippet: $('#snippet').val()
         }).done(data => displayChart(data))

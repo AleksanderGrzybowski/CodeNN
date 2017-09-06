@@ -10,6 +10,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.moowork.node" version "1.2.0"
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -31,3 +35,21 @@ dependencies {
 }
 
 
+node {
+    version = '8.4.0'
+    download = true
+    nodeModulesDir = file("${project.projectDir}/frontend")
+}
+
+task buildFrontend(type: NpmTask) {
+    args = ['run', 'build']
+}
+
+task copyToPublic(dependsOn: [buildFrontend]) {
+    copy {
+        from "${project.projectDir}/frontend/dist"
+        into "${project.projectDir}/public"
+    }
+}
+
+bootRun.dependsOn copyToPublic
