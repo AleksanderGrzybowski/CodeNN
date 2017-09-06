@@ -17,7 +17,7 @@ class CommentRemover {
     private static final String CPP_COMMENT_START = "//";
     private static final String RUBY_COMMENT_START = "#";
     
-    public String removeComments(String fileContent) {
+    String removeComments(String fileContent) {
         try {
             fileContent = stripCPPandRuby(stripC(fileContent));
         } catch (Exception ignored) {

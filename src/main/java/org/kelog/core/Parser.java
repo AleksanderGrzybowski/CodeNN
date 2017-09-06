@@ -1,5 +1,6 @@
 package org.kelog.core;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -9,14 +10,11 @@ import java.nio.file.Files;
 
 
 @Component
+@RequiredArgsConstructor
 public class Parser {
-    private CommentRemover commentRemover;
-    private KeywordsList keywordsList;
     
-    public Parser(CommentRemover commentRemover, KeywordsList keywordsList) {
-        this.commentRemover = commentRemover;
-        this.keywordsList = keywordsList;
-    }
+    private final CommentRemover commentRemover;
+    private final KeywordsList keywordsList;
     
     public double[] histogram(String snippet) {
         double[] histogram = parse(snippet);

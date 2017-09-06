@@ -1,5 +1,7 @@
 package org.kelog.core;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.encog.engine.network.activation.ActivationSigmoid;
@@ -13,32 +15,16 @@ import org.kelog.exceptions.EpochNumberExceeded;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Log
+@RequiredArgsConstructor
 public class Trainer {
     
-    private Parser parser;
-    private KeywordsList keywordsList;
+    private final KeywordsList keywordsList;
+    private final Parser parser;
     
-    private int maximumEpochs;
-    private double maximumError;
-    
-    private Logger logger;
-    
-    public Trainer(
-            KeywordsList keywordsList,
-            Parser parser,
-            int maximumEpochs,
-            double maximumError,
-            Logger logger
-    ) {
-        this.keywordsList = keywordsList;
-        this.parser = parser;
-        this.maximumEpochs = maximumEpochs;
-        this.maximumError = maximumError;
-        this.logger = logger;
-    }
+    private final int maximumEpochs;
+    private final double maximumError;
     
     public BasicNetwork createNetwork(String zipFilename) throws IOException {
         String trainingDataDir = unzipTrainingData(zipFilename);
@@ -54,7 +40,7 @@ public class Trainer {
         for (Language lang : Language.values()) {
             //noinspection ConstantConditions
             for (File source : new File(trainingDataDir + File.separator + lang).listFiles()) {
-                logger.log(Level.INFO, "Going through " + source.getName());
+                log.info("Going through " + source.getName());
                 inputs[index] = parser.histogram(source);
                 outputs[index][lang.ordinal()] = 1.0; // others are 0-s
                 
@@ -96,7 +82,7 @@ public class Trainer {
         if (inputs.length != outputs.length) {
             throw new AssertionError("Numbers of input/output vectors don't match!");
         }
-        logger.info("Training network, " + inputs.length + " vector(s)");
+        log.info("Training network, " + inputs.length + " vector(s)");
         
         MLDataSet trainingSet = new BasicMLDataSet(inputs, outputs);
         
@@ -112,14 +98,14 @@ public class Trainer {
         int epoch = 1;
         do {
             train.iteration();
-            logger.info("Epoch #" + epoch + " Error:" + train.getError());
+            log.info("Epoch #" + epoch + " Error:" + train.getError());
             
             epoch++;
             if (epoch > maximumEpochs) {
                 throw new EpochNumberExceeded();
             }
         } while (train.getError() > maximumError);
-        logger.info("Epoch #" + epoch + " -> finished.");
+        log.info("Epoch #" + epoch + " -> finished.");
         train.finishTraining();
         
         return network;

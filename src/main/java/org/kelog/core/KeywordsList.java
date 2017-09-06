@@ -3,7 +3,10 @@ package org.kelog.core;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
@@ -36,7 +39,7 @@ public class KeywordsList extends AbstractCollection<String> {
         return keywords.size();
     }
     
-    public int indexOf(String guess) {
+    int indexOf(String guess) {
         return keywords.indexOf(guess);
     }
 }

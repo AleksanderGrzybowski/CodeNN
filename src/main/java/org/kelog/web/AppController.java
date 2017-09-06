@@ -1,6 +1,6 @@
 package org.kelog.web;
 
-import org.kelog.core.Client;
+import org.kelog.core.LanguageDetector;
 import org.kelog.core.Language;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,14 +12,14 @@ import java.util.EnumMap;
 @RestController
 public class AppController {
     
-    private final Client client;
+    private final LanguageDetector languageDetector;
     
-    public AppController(Client client) {
-        this.client = client;
+    public AppController(LanguageDetector languageDetector) {
+        this.languageDetector = languageDetector;
     }
     
     @RequestMapping(value = "/ask", method = RequestMethod.GET)
     public EnumMap<Language, Double> ask(@RequestParam("snippet") String snippet) {
-        return client.match(snippet);
+        return languageDetector.match(snippet);
     }
 }
