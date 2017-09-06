@@ -1,9 +1,4 @@
-package org.kelog.end;
-
-import com.google.inject.Inject;
-import org.kelog.core.EncogAdapter;
-import org.kelog.core.Language;
-import org.kelog.core.Parser;
+package org.kelog.core;
 
 import java.util.EnumMap;
 
@@ -12,7 +7,6 @@ public class Client {
 	private EncogAdapter adapter;
 	private Parser parser;
 
-	@Inject
 	public Client(EncogAdapter adapter, Parser parser) {
 		this.parser = parser;
 		this.adapter = adapter;
