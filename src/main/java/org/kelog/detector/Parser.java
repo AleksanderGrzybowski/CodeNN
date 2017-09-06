@@ -1,4 +1,4 @@
-package org.kelog.core;
+package org.kelog.detector;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,13 +16,13 @@ public class Parser {
     private final CommentRemover commentRemover;
     private final KeywordsList keywordsList;
     
-    public double[] histogram(String snippet) {
+    double[] histogram(String snippet) {
         double[] histogram = parse(snippet);
         
         return normalizedHistogram(histogram);
     }
     
-    public double[] histogram(File file) {
+    double[] histogram(File file) {
         String snippet = readFromFile(file);
         snippet = commentRemover.removeComments(snippet);
         return histogram(snippet);
@@ -59,7 +59,7 @@ public class Parser {
         return histogram;
     }
     
-    public double[] normalizedHistogram(double[] histogram) {
+    private double[] normalizedHistogram(double[] histogram) {
         double[] h = histogram.clone();
         double sum = 0.0;
         

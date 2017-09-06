@@ -1,4 +1,4 @@
-package org.kelog.core;
+package org.kelog.detector;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -25,9 +25,10 @@ public class Trainer {
     
     private final int maximumEpochs;
     private final double maximumError;
+    private final File trainingDataFile;
     
-    public BasicNetwork createNetwork(String zipFilename) throws IOException {
-        String trainingDataDir = unzipTrainingData(zipFilename);
+    BasicNetwork createNetwork() throws IOException {
+        String trainingDataDir = unzipTrainingData();
         
         int numberOfFiles = countTrainingFiles(trainingDataDir);
         double[][] inputs = new double[numberOfFiles][keywordsList.size()];
@@ -53,9 +54,9 @@ public class Trainer {
         return doTraining(inputs, outputs, hiddenLayerSize, maximumError);
     }
     
-    private static String unzipTrainingData(String zipFilename) throws IOException {
+    private String unzipTrainingData() throws IOException {
         try {
-            ZipFile zipFile = new ZipFile(zipFilename);
+            ZipFile zipFile = new ZipFile(trainingDataFile);
             File tempDir = Files.createTempDirectory("codenn").toFile();
             
             String destinationPath = tempDir.getAbsolutePath();
@@ -78,7 +79,7 @@ public class Trainer {
     /**
      * Most of this is blatantly copied from the official tutorials (encog/encog-java-examples)
      */
-    public BasicNetwork doTraining(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
+    private BasicNetwork doTraining(double[][] inputs, double[][] outputs, int hiddenLayerSize, double maximumError) {
         if (inputs.length != outputs.length) {
             throw new AssertionError("Numbers of input/output vectors don't match!");
         }

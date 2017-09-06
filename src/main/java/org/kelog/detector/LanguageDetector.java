@@ -1,4 +1,4 @@
-package org.kelog.core;
+package org.kelog.detector;
 
 import lombok.RequiredArgsConstructor;
 

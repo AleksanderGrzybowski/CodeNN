@@ -1,4 +1,4 @@
-package org.kelog.core;
+package org.kelog.detector;
 
 /**
  * DO NOT ALTER SEQUENCE (a lot of stuff relies on that).
@@ -6,5 +6,5 @@ package org.kelog.core;
  * neural network files after modifying these values.
  */
 public enum Language {
-	BASH, C, CPP, CSHARP, JAVA, JAVASCRIPT, PASCAL, PERL, PYTHON, RUBY
+    BASH, C, CPP, CSHARP, JAVA, JAVASCRIPT, PASCAL, PERL, PYTHON, RUBY
 }

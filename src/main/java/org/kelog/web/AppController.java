@@ -1,7 +1,7 @@
 package org.kelog.web;
 
-import org.kelog.core.LanguageDetector;
-import org.kelog.core.Language;
+import org.kelog.detector.LanguageDetector;
+import org.kelog.detector.Language;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
